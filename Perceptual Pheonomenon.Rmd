@@ -1,0 +1,99 @@
+---
+title: "Test a Perceptual Phenomenon"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### By Hardeep Johar
+
+1.)   
+Independent variable: congruent vs. incongruent words.   
+Dependent variable: Time it takes to name the ink colors in equally-sized lists.
+
+2a.)   
+Null hypothesis (H0): There is no difference in population means of response   
+time for incongruent and congruent scenarios, which can be mathematically  
+represented as:   
+H0: uC = uI where uC is the population mean of response time for incongruent   
+words and uI is the population mean of reponse time for congruent words.
+
+Alternative hypothesis (HA): Population mean of response time for congruent   
+scenarios is less than population mean of response time for incongruent   
+scenarios, which can be mathematically represented as:   
+HA: uC < uI where uC is the population mean of response time for incongruent   
+words and uI is the population mean of reponse time for congruent words.
+
+2b.)   
+I expect to perform a one tailed paired t-test.  One tailed because we are   
+concerned with how much more time and not how much less time - so the test    
+would only need to be one directional.  Also because we do not know the   
+population parameters a t-test would be the most apprpriate.
+
+A Z-test would require we have greater than 30 samples and we know the    
+population mean (sigma).  Neither is true in this case so we cannot use a   
+Z-test.
+
+An F-test would require 3 or more population means which we do not have so   
+we cannot use an F-test.
+
+We are trying to determine the following: based on these samples,   
+can we conclude that there is no difference in population means of response   
+time for incongruent and congruent scenarios at a given confidence level.
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, Load_the_Data}
+persep <- read.csv('stroopdata.csv')
+persep2 <- gather(persep, key=Group, value=Time)
+```
+
+3.)  
+Congruent dataset standard deviation is 3.559.  
+Below shows the measure of center and variability.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(persep$Congruent)
+```
+
+Incongruent dataset standard deviation is 4.797.   
+Below shows the measure of center and variability.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(persep$Incongruent)
+```
+
+4.)   
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(persep2, aes(y = Time, x = Group, col=Group)) + 
+              geom_jitter(position = position_jitter(height = 0, width=0.1))+
+              geom_boxplot(alpha = 0, color = "black")
+```
+
+This chart is a visualization of the measures of variability and center shown   
+above.  It shows that in most cases, congruent words take less time to read    
+through than Incongruent words do.
+
+5.)   
+At a confidence level of 95% (alpha = 0.05) on a 1 tailed T test with 23 dF:   
+T-Critical = 1.714   
+T-Statistic = -8.021   
+We would reject the null hypothesis   
+The results did match up with my expectations that incongruent word lists will   
+take more time to read through than iongruent word lists.    
+
+6.)   
+What is responsible for the effects is the brain getting tricked into reading   
+the words instead of distinguishing the color.
+
+An example of this could be asking a group of people to choose a shoe where   
+there are two groups of shoes - one which is cheap quality but looks nice and   
+carries a high price tag or one that is a higher quality but does not look as   
+nice but carries a slightly lower price tag.
+
+
